@@ -34,14 +34,11 @@ class Users:
     def login(self, cursor, nickname, password):
         cursor.execute('SELECT * FROM users WHERE nickname = ?', (nickname,))
         user = cursor.fetchone()
-        if user:
-            stored_hash_password = user[4]
-            if self.check_password(password, stored_hash_password):
-                print("Login successful!")
-            else:
-                print("Incorrect password. Try again.")
+        stored_hash_password = user[4]
+        if self.check_password(password, stored_hash_password):
+            print("Login successful!")
         else:
-            print("User not found. You can register with the command 'register'.")
+            print("Incorrect password. Try again.")
     def check_password(self, password, stored_hash_password):
         password_hash = hashlib.sha256(password.encode()).hexdigest()
         return password_hash == stored_hash_password
